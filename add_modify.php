@@ -10,7 +10,7 @@ $id = (int)($_GET['id'] ?? $_POST['id'] ?? 0);
 
 $isEdit = $id > 0; //if the id is greater than 0, we are in edit mode, otherwise we are in add mode
 $book = null;
-if($isEdit > 0){
+if($isEdit){
         $book = getBookById($id);
         if($book === null){
                 header("Location: index.php");
@@ -22,7 +22,9 @@ if($isEdit > 0){
 //$allGenres[] = getEnumVal('book', 'literary_genre');
 // Inside add_modify.php, where you define $data
 
-
+$categories_array = getEnumValues('book', 'category');
+$genres_array     = getEnumValues('book', 'literary_genre');
+$language_array     = getEnumValues('book', 'language');
 
 //update the book
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
@@ -39,13 +41,13 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
         ];
         //check if ther is a error
         if ($data['title'] === '') {
-        $errors[] = 'Il titolo è obbligatorio.';
+                $errors[] = 'Il titolo è obbligatorio.';
         }
         if ($data['author'] === '') {
                 $errors[] = "L'autore è obbligatorio.";
         }
 
-        $validCategories = ['Book', 'Comics', 'Manga', 'Manhwa'];
+        $validCategories = $categories_array; // Assuming $categories_array is defined and contains valid categories];
         if (!in_array($data['category'], $validCategories)) {
                 $errors[] = 'Categoria non valida.';
         }
@@ -94,9 +96,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 }
 
-$categories_array = getEnumValues('book', 'category');
-$genres_array     = getEnumValues('book', 'literary_genre');
-$language_array     = getEnumValues('book', 'language');
+
 
 
 function h(string $str): string
@@ -128,10 +128,10 @@ $pageTitle = $isEdit ? 'Modify Book' : 'Add Book';
 <body>
         
         <header>
-                <a href="index.php">Annulla</a>  <!--Per tornare alla pagina di index-->
+                <a href="index.php" class="btn-custom">Annulla</a>  <!--Per tornare alla pagina di index-->
                 <h2><?= h($pageTitle) ?></h2>
         </header>
-        <form action="add_modify.php" method="POST" enctype="multipart/form-data"> 
+        <form action="add_modify.php" method="POST" enctype="multipart/form-data" class = "form-addModify"> 
                 <!--enctype="multipart/form-data": we use this command for file upload
                 in our case we use it for upload the cover of the book-->
                 <?php if ($isEdit): ?> <!--we use this for save the id if we are modifying a book-->
@@ -186,15 +186,15 @@ $pageTitle = $isEdit ? 'Modify Book' : 'Add Book';
                 </div>
 
                 <div>
-                        <label for="isRead">Status of Reading</label>
-                        <select id="isRead" name="read" required>
+                        <label for="isread">Status of Reading</label>
+                        <select id="isread" name="isread" required>
                         <?php
                                 $currentRead = $_SERVER['REQUEST_METHOD'] === 'POST'
-                                ? ($_POST['isread'] ?? '0')
-                                : ($book['isread'] ?? '0');
+                                ? (int)($_POST['isread'] ?? 0)
+                                : (int)($book['isread'] ?? 1);
                         ?>
-                        <option value="0" <?= $currentRead == '0' ? 'selected' : '' ?>>To read</option>
-                        <option value="1" <?= $currentRead == '1' ? 'selected' : '' ?>>Read</option>
+                        <option value="0" <?= $currentRead == 0 ? 'selected' : '' ?>>To read</option>
+                        <option value="1" <?= $currentRead == 1 ? 'selected' : '' ?>>Read</option>
                         </select>
                 </div>
 
@@ -213,9 +213,9 @@ $pageTitle = $isEdit ? 'Modify Book' : 'Add Book';
                         <?php endif; ?>
                 </div>
                 <div> <!-- one for go back to the index page, the other one for save -->      
-                        <a href=<?= $isEdit ? "book.php?id=" . $id : "'index.php'" ?>>Back</a>
+                        <a href=<?= $isEdit ? "book.php?id=" . $id : "'index.php'" ?> class="btn-custom">Back</a>
                 
-                        <button type="submit">Save</button>
+                        <button type="submit" class="btn-custom">Save</button>
                 </div>
         </form>
 </body>

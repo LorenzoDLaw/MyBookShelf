@@ -181,7 +181,7 @@ function updateBook(int $id, array $data): void
 function deleteBook(int $id): void
 {
     global $pdo;
-
+    
     $stmt = $pdo->prepare('DELETE FROM book WHERE id = ?');
     $stmt->execute([$id]);
 }

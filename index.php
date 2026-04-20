@@ -57,7 +57,7 @@ function getEnumVal($table, $column): array
 <body>
     <header>
         <h1>My Bookshelf</h1>
-        <a href="add_modify.php" class="button_add">Add a book</a>
+        <a href="add_modify.php" class="btn-custom">Add a book</a>
     </header>
     
    <section method="POST" action = "index.php">
@@ -97,8 +97,8 @@ function getEnumVal($table, $column): array
                 <option value="1" <?= $filters["isread"] === "1" ? "selected" : "" ?>>Read</option>
                 <option value="0" <?= $filters["isread"] === "0" ? "selected" : "" ?>>Unread</option>
             </select>
-            <button type="submit" class="btn btn-secondary">Filtra</button>        
-            <a href="index.php" class="btn btn-ghost">Reset</a>
+            <button type="submit" class="btn-custom">Filtra</button>        
+            <a href="index.php" class="btn-custom">Reset</a>
         </form>
    </section> 
 
@@ -123,7 +123,7 @@ function getEnumVal($table, $column): array
             >
         <?php endif; ?>
         <!-- Info about the book -->
-        <div class="book_info">
+        <div class="books_info">
             <span class = "book_title"><?= h($book['title']) ?></span> <br>
             <span class = "book_author"><?= h($book['author']) ?></span> <br>
             <span class= "book_read"><?= h($book['isread'] ? 'Read' : 'Unread') ?></span>
