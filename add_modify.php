@@ -36,7 +36,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
                 'category' => $_POST['category'] ?? '',
                 'literary_genre' => $_POST['literary_genre'] ?? '',
                 'language' => $_POST['language'] ?? '',
-                'isread' => isset($_POST['isread']) ? 1 : 0, //if the checkbox is checked, we set it to 1, otherwise we set it to 0
+                'isread' => ($_POST['isread']) ? 1 : 0, //if the checkbox is checked, we set it to 1, otherwise we set it to 0
                 'description' => $_POST['description'] ?? ''
         ];
         //check if ther is a error
@@ -162,15 +162,22 @@ $pageTitle = $isEdit ? 'Modify Book' : 'Add Book';
                         <label for="category">Category:</label>
                         <select name="category" id="category" required>
                                 <?php foreach($categories_array as $catgory): ?>
-                                <option value="<?= h($catgory) ?>"><?= h($catgory) ?></option>
+                                        <?php if ($catgory == ($book['literary_genre'])): ?>
+                                                <option value="<?= h($catgory) ?>" selected><?= h($catgory) ?></option>
+                                        <?php endif ?> 
+                                        <option value="<?= h($catgory) ?>"><?= h($catgory) ?></option>
                                 <?php endforeach; ?>
                         </select>
                 </div>
                 <div>
                         <label for="literary_genre">Literary Genre:</label>
-                        <select name="literary_genre" id="literary_genre" required multiple>
+                        <select name="literary_genre" id="literary_genre" required >
                                 <?php foreach($genres_array as $genre): ?>
-                                <option value="<?= h($genre) ?>"><?= h($genre) ?></option>
+                                        <?php if ($genre == ($book['literary_genre'])): ?>
+                                                <option value="<?= h($genre) ?>" selected><?= h($genre) ?></option>
+                                        <?php endif ?> 
+                                        <option value="<?= h($genre) ?>"><?= h($genre) ?></option>
+
                                 <?php endforeach; ?>
                         </select>
                 </div>
@@ -187,14 +194,20 @@ $pageTitle = $isEdit ? 'Modify Book' : 'Add Book';
 
                 <div>
                         <label for="isread">Status of Reading</label>
-                        <select id="isread" name="isread" required>
-                        <?php
-                                $currentRead = $_SERVER['REQUEST_METHOD'] === 'POST'
-                                ? (int)($_POST['isread'] ?? 0)
-                                : (int)($book['isread'] ?? 1);
-                        ?>
-                        <option value="0" <?= $currentRead == 0 ? 'selected' : '' ?>>To read</option>
-                        <option value="1" <?= $currentRead == 1 ? 'selected' : '' ?>>Read</option>
+                        <select id="isread" name="isread" required>                   
+                                <?php 
+                                        $currentRead = $book['isread'] ?? 0; // Default to 0 (To read) if not set
+                                ?>
+                                <option value="0" <?= $currentRead == 0 ? 'selected' : '' ?>>To read</option>
+                                <option value="1" <?= $currentRead == 1 ? 'selected' : '' ?>>Read</option>
+                                <!--?php
+                                        $currentRead = $_SERVER['REQUEST_METHOD'] === 'POST'
+                                        ? (int)($_POST['isread'] ?? 0)
+                                        : (int)($book['isread'] ?? 1);
+                                ?>
+                                <option value="0" < ?= $currentRead == 0 ? 'selected' : '' ?>>To read</option>
+                                <option value="1" < ?= $currentRead == 1 ? 'selected' : '' ?>>Read</option>
+                                -->
                         </select>
                 </div>
 

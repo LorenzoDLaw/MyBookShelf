@@ -66,7 +66,7 @@ function getEnumVal($table, $column): array
             <input type="text" name="search" id="search" placeholder="Search by title..." >
 
             <select name="category" id="category"> <!-- Like book, manga, comics, manga -->
-                <!-- fetch from database the enum values -->
+                <option value="" selected disabled hidden>Category</option>
                 <?php foreach(getEnumVal('book', 'category') as $category): ?>
                 <option value="<?= h($category) ?>">
                     <?= h($category) ?>
@@ -74,14 +74,18 @@ function getEnumVal($table, $column): array
                 <?php endforeach; ?>
             </select>
 
-            <select name="literary_genre[]" multiple>
+            <select name="literary_genre[]" >
+                <option value="" selected disabled hidden>Literary Genre</option>
                 <?php foreach(getEnumVal('book', 'literary_genre') as $genre): ?>
-                    <option value="<?= h($genre) ?>"><?= h($genre) ?></option>
+                    <option value="<?= h($genre) ?>">
+                        <?= h($genre) ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
 
             <select name="language" id="language"> <!-- Like Italian, English, Spanish -->
                 <!-- fetch from database the enum values -->
+                <option value="" selected disabled hidden>Language</option>
                 <?php foreach(getEnumVal('book', 'language') as $language): ?>
                 <option value="<?= h($language) ?>">
                     <?= h($language) ?>
@@ -91,7 +95,7 @@ function getEnumVal($table, $column): array
             </select>
                     
             <select name="isread" id="isread">      
-                <option value="">All</option>
+                <option value="" selected disabled hidden>Read status</option>
                 <!-- == performs type coercion and compares values after converting them to a common type
                  while === checks both value and type without coercion-->
                 <option value="1" <?= $filters["isread"] === "1" ? "selected" : "" ?>>Read</option>
