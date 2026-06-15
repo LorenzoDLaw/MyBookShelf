@@ -92,7 +92,7 @@ mybookshelf/
 
 6. **Access the application**:
    ```
-   http://localhost/libreria-personale/
+   http://localhost/mybookshelf/
    ```
 
 ---
