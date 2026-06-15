@@ -32,7 +32,7 @@ This project deliberately chose PHP + XAMPP for:
 ## Project Structure
 
 ```
-libreria-personale/
+mybookshelf/
 ├── index.php              # Home page: book grid, filtering UI
 ├── book.php               # Detail page: single book view
 ├── add_modify.php         # Form page: create/edit books

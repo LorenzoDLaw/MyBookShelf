@@ -48,7 +48,7 @@ section form input, section form select {
 
 /* La scheda del libro */
 .book_card {
-    background: #1c1c1c; /* Grigio molto scuro */
+    background: #1c1c1c; 
     text-decoration: none;
     color: inherit;
     border-radius: 12px;
