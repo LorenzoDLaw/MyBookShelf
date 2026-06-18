@@ -13,24 +13,27 @@ define('DB_PASS', '');            // Default XAMPP password is empty
         It prevent sql Injection because the data is sent separately from the command.
 */        
 
+// 2. Define PDO configuration options
+$options = [
+    // These options make PDO throw exceptions on errors
+    // instead of silently failing. Always include them!
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+
+    // FETCH_ASSOC means query results come back as
+    //associative arrays: $row['title'] instead of $row[0]
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+
+    // Emulated prepares OFF = real prepared statements.
+    //This is more secure against SQL injection.
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
 try {
     $pdo = new PDO(
         'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
         DB_USER,
         DB_PASS,
-        [
-            // These options make PDO throw exceptions on errors
-            //         instead of silently failing. Always include them!
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-
-            // FETCH_ASSOC means query results come back as
-            //         associative arrays: $row['title'] instead of $row[0]
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-
-            // Emulated prepares OFF = real prepared statements.
-            //         This is more secure against SQL injection.
-            PDO::ATTR_EMULATE_PREPARES   => false,
-        ]
+        $options
     );
 } catch (PDOException $e) {
     die('Database connection failed: ' . $e->getMessage());
@@ -40,11 +43,11 @@ try {
  *  Fetch books with optional filters and pagination.
  * @param  array  $filters  Keys: category, literary_genre, language,
  *                          isread, search (title keyword)
- * @param  int    $limit    How many books to return (default 50)
+ * @param  int    $limit    How many books to return (default 100)
  * @param  int    $offset   How many to skip (for Load More pagination)
  * @return array            Array of book rows
  */
-function getBooks(array $filters = [], int $limit = 50, int $offset = 0): array
+function getBooks(array $filters = [], int $limit = 100, int $offset = 0): array
 {
     global $pdo; 
 
